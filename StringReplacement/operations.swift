@@ -51,6 +51,14 @@ extension String {
     }
     
     
+    func substring(from: Int, to: Int) -> String {
+        let start = index(startIndex, offsetBy: from)
+        let end = index(startIndex, offsetBy: to)
+
+        return String(self[start..<end])
+    }
+    
+    
     subscript (i: Int) -> Character {
         return self[index(startIndex, offsetBy: i)]
     }
