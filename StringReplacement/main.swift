@@ -2,10 +2,13 @@ import Foundation
 
 
 fileprivate func main() {
-    let first = String("sittign")
-    let second = String("kitten")
+    if CommandLine.argc != 3 {
+        fatalError("There should be two sentences in arguments")
+    }
     
-    print(findRules(first, second))
+    print(CommandLine.arguments[1], CommandLine.arguments[2])
+    
+    print(findRules(CommandLine.arguments[1].lowercased(), CommandLine.arguments[2].lowercased()))
 }
 
 
@@ -29,10 +32,21 @@ private func descendingCharNumberReplacement(_ first: String, _ second: String) 
     var rules = ""
     
     for i in 0..<second.count {
-        
+        // basically we have not enought letters in first word
+        if changed.count <= i {
+            rules.append(insertOperation.execute(&changed, second, at: i))
+        } else if changed[i] != second[i] {
+            if changed.count < second.count {
+                rules.append(insertOperation.execute(&changed, second, at: i))
+            } else {
+                rules.append(replaceOperation.execute(&changed, second, at: i))
+            }
+        }
     }
     
-    return rules
+    print("created word - \(changed)")
+    
+    return "set of rules = \(rules)"
 }
 
 
@@ -85,7 +99,7 @@ private func ascendingCharNumberReplacement(_ first: String, _ second: String) -
     
     manageLastCharacter(at: second.count - 1)
     
-    print(changed)
+    print("created word - \(changed)")
     
     return rules
 }
@@ -101,6 +115,8 @@ private func equalCharNumberReplacement(_ first: String, _ second: String) -> St
             rules.append(replaceOperation.execute(&changed, second, at: i))
         }
     }
+    
+    print("created word - \(changed)")
     
     return rules
 }
